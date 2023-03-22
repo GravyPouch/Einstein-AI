@@ -5,6 +5,14 @@
       "bundler": "metro"
     },
     "name": "einstein",
-    "slug": "einstein"
+    "slug": "einstein",
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+        }
+      ]
+    ]
   }
 }
