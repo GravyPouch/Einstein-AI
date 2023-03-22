@@ -12,8 +12,6 @@ import { Fontisto } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import SelectorBox from "./components/SelectorBox.js";
-
 export default function Page() {
   const [flash, setFlash] = useState(FlashMode.auto);
   const [flashIcon, setFlashIcon] = useState("ios-flash");
@@ -95,9 +93,7 @@ export default function Page() {
             </Link>
           </View>
 
-          <View>
-            <SelectorBox />
-          </View>
+          <View className=" bg-slate-200/20 p-10 rounded border-white border-4 border-dashed"></View>
 
           <View>
             <View className="flex flex-row justify-around items-center">
