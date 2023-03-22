@@ -1,20 +1,32 @@
-import { Camera, CameraType, FlashMode } from "expo-camera";
+import { Camera, CameraType, FlashMode, ImageType } from "expo-camera";
 import { Link } from "expo-router";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 import SelectorBox from "./components/SelectorBox.js";
 
 export default function Page() {
   const [flash, setFlash] = useState(FlashMode.auto);
+  const [flashIcon, setFlashIcon] = useState("ios-flash");
+
+  useEffect(() => {
+    if (flash === FlashMode.off) {
+      setFlashIcon("ios-flash");
+    } else if (flash === FlashMode.on) {
+      setFlashIcon("ios-flash-outline");
+    }
+  }, [flash]);
+
   const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  const [cameraRef, setCameraRef] = useState(null);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -41,6 +53,7 @@ export default function Page() {
 
   function capture() {
     console.log("capture");
+    cameraRef.takePictureAsync();
   }
 
   function settings() {
@@ -53,7 +66,15 @@ export default function Page() {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={CameraType.back} flashMode={flash}>
+      <Camera
+        style={styles.camera}
+        type={CameraType.back}
+        flashMode={flash}
+        ImageType={ImageType.jpg}
+        ref={(ref) => {
+          setCameraRef(ref);
+        }}
+      >
         <SafeAreaView style={styles.buttonContainer}>
           <View className="flex flex-row justify-between ">
             <Link href="/menu">
@@ -79,7 +100,7 @@ export default function Page() {
             </TouchableOpacity>
 
             <TouchableOpacity onPress={toggleFlash}>
-              <FontAwesome5 name="bolt" size={32} color="white" />
+              <Ionicons name={flashIcon} size={32} color="white" />
             </TouchableOpacity>
           </View>
         </SafeAreaView>
