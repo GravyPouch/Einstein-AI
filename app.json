@@ -19,6 +19,12 @@
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "44ee9bc1-1749-4d46-8c4f-a472da9364ff"
+      }
+    },
+    "owner": "gravypouch"
   }
 }
