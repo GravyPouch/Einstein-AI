@@ -1,9 +1,17 @@
 import { Camera, CameraType, FlashMode, ImageType } from "expo-camera";
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import { Link } from "expo-router";
 
 import { useState, useEffect } from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  PanResponder,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Feather } from "@expo/vector-icons";
@@ -12,9 +20,18 @@ import { Fontisto } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
+import SelectorBox from "./components/SelectorBox";
+
 export default function Page() {
   const [flash, setFlash] = useState(FlashMode.auto);
   const [flashIcon, setFlashIcon] = useState("ios-flash");
+
+  const [image, setImage] = useState(null);
+
+  const [cropY, setCropY] = useState(350);
+  const [cropX, setCropX] = useState(350);
+  const [cropOriginX, setCropOriginX] = useState(0);
+  const [cropOriginY, setCropOriginY] = useState(0);
 
   useEffect(() => {
     if (flash === FlashMode.off) {
@@ -50,7 +67,7 @@ export default function Page() {
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.canceled) {
@@ -66,9 +83,27 @@ export default function Page() {
     );
   }
 
-  function capture() {
+  async function capture() {
     console.log("capture");
-    cameraRef.takePictureAsync();
+    const picture = await cameraRef.takePictureAsync({
+      allowsEditing: true,
+      quality: 0.5,
+    });
+    const manipResult = await manipulateAsync(
+      picture.uri,
+      [
+        {
+          crop: {
+            height: cropY,
+            width: cropX,
+            originX: cropOriginX,
+            originY: cropOriginY,
+          },
+        },
+      ],
+      { compress: 0.5, format: SaveFormat.JPEG }
+    );
+    setImage(manipResult);
   }
 
   return (
@@ -93,7 +128,9 @@ export default function Page() {
             </Link>
           </View>
 
-          <View className=" bg-slate-200/20 p-10 rounded border-white border-4 border-dashed"></View>
+          <View className=" ">
+            <SelectorBox />
+          </View>
 
           <View>
             <View className="flex flex-row justify-around items-center">

@@ -17,6 +17,13 @@ export default function Layout() {
           presentation: "modal",
         }}
       />
+      <Stack.Screen
+        name="chat"
+        options={{
+          // Set the presentation mode to modal for our modal route.
+          presentation: "modal",
+        }}
+      />
     </Stack>
   );
 }
