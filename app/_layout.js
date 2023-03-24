@@ -13,7 +13,6 @@ export default function Layout() {
       <Stack.Screen
         name="history"
         options={{
-          // Set the presentation mode to modal for our modal route.
           presentation: "modal",
           title: "🕰️ History",
         }}
@@ -21,9 +20,15 @@ export default function Layout() {
       <Stack.Screen
         name="chat"
         options={{
-          // Set the presentation mode to modal for our modal route.
           presentation: "modal",
           title: "💬 Chat",
+        }}
+      />
+      <Stack.Screen
+        name="purchase"
+        options={{
+          presentation: "modal",
+          title: "🪙 Tokens",
         }}
       />
     </Stack>

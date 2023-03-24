@@ -10,7 +10,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  PanResponder,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -118,12 +118,14 @@ export default function Page() {
         }}
       >
         <SafeAreaView style={styles.buttonContainer}>
-          <View className="flex flex-row justify-between p-2">
-            <Link href="/menu">
-              <Feather name="menu" size={32} color="white" />
+          <View className="flex flex-row justify-between items-center p-4">
+            <Link href="/purchase">
+              <View className=" bg-orange-300 rounded-full p-3">
+                <Text className=" font-bold text-white">1/10</Text>
+              </View>
             </Link>
 
-            <Link href="/settings">
+            <Link href="settings">
               <Feather name="settings" size={32} color="white" />
             </Link>
           </View>
