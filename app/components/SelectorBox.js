@@ -7,22 +7,34 @@ export default SelectorBox = () => {
 
   const [width, setWidth] = useState(300);
   const [height, setHeight] = useState(50);
+  const [gestureDx, setGestureDx] = useState(0);
+  const [gestureDy, setGestureDy] = useState(0);
 
   useEffect(() => {
-    console.log("width: " + width);
-    console.log("height: " + height);
+    //console.log("width: " + width);
+    //console.log("height: " + height);
   }, [width, height]);
 
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (evt, gestureState) => {
+        if (gestureState.dx === 0) {
+          return;
+        } else if (gestureState.dy === 0) {
+          return;
+        }
         const newWidth = Math.min(width + gestureState.dx * 1.75, 350);
         const newHeight = Math.min(height + gestureState.dy * 1.75, 410);
         setWidth(newWidth);
         setHeight(newHeight);
       },
       onPanResponderRelease: (evt, gestureState) => {
+        if (gestureState.dx === 0) {
+          return;
+        } else if (gestureState.dy === 0) {
+          return;
+        }
         const newWidth = Math.min(width + gestureState.dx * 1.75, 350);
         const newHeight = Math.min(height + gestureState.dy * 1.75, 410);
         setWidth(newWidth);

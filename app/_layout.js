@@ -15,6 +15,7 @@ export default function Layout() {
         options={{
           // Set the presentation mode to modal for our modal route.
           presentation: "modal",
+          title: "🕰️ History",
         }}
       />
       <Stack.Screen
@@ -22,6 +23,7 @@ export default function Layout() {
         options={{
           // Set the presentation mode to modal for our modal route.
           presentation: "modal",
+          title: "💬 Chat",
         }}
       />
     </Stack>
