@@ -1,7 +1,8 @@
 import { Camera, CameraType, FlashMode, ImageType } from "expo-camera";
 import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
-import { Link } from "expo-router";
+import * as Haptics from "expo-haptics";
+import { Link, useRouter } from "expo-router";
 
 import { useState, useEffect } from "react";
 import {
@@ -28,10 +29,12 @@ export default function Page() {
 
   const [image, setImage] = useState(null);
 
-  const [cropY, setCropY] = useState(350);
-  const [cropX, setCropX] = useState(350);
-  const [cropOriginX, setCropOriginX] = useState(0);
-  const [cropOriginY, setCropOriginY] = useState(0);
+  const [cropY, setCropY] = useState(500);
+  const [cropX, setCropX] = useState(700);
+  const [cropOriginX, setCropOriginX] = useState(500);
+  const [cropOriginY, setCropOriginY] = useState(500);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (flash === FlashMode.off) {
@@ -104,6 +107,21 @@ export default function Page() {
       { compress: 0.5, format: SaveFormat.JPEG }
     );
     setImage(manipResult);
+
+    cameraRef.pausePreview();
+
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+    const imageURI = await manipResult.uri;
+
+    var result = /[^/]*$/.exec(imageURI)[0];
+
+    console.log(imageURI);
+
+    router.push({
+      pathname: "/answer",
+      params: { image: result, type: "history" },
+    });
   }
 
   return (
@@ -133,6 +151,8 @@ export default function Page() {
           <View className=" ">
             <SelectorBox />
           </View>
+
+          <View className=" "></View>
 
           <View>
             <View className="flex flex-row justify-around items-center">

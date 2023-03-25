@@ -11,6 +11,13 @@ export default function Layout() {
         }}
       />
       <Stack.Screen
+        name="answer"
+        options={{
+          presentation: "modal",
+          title: "📝 Answer",
+        }}
+      />
+      <Stack.Screen
         name="history"
         options={{
           presentation: "modal",
