@@ -127,7 +127,7 @@ export default function Page() {
       to: `${FileSystem.documentDirectory}images/${result}`,
     });
 
-    await writeProblem("@problems", result);
+    await writeProblem("@history", result);
 
     router.push({
       pathname: "/answer",

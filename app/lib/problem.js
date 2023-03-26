@@ -2,9 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export async function read(name) {
   try {
-    const jsonValue = await AsyncStorage.getItem("@history");
-    console.log("value read:");
-    console.log(jsonValue);
+    const jsonValue = await AsyncStorage.getItem(name);
     return jsonValue != null ? JSON.parse(jsonValue) : null;
   } catch (e) {
     // error reading value
@@ -14,20 +12,33 @@ export async function read(name) {
 
 export async function writeProblem(name, value) {
   value = { img: value, time: Date.now() };
-  console.log(value);
+
   read(name).then(async (data) => {
     if (data == null) {
       data = [];
     }
     try {
-      data = data.concat(value);
-      console.log(data);
+      data.push(value);
+
       const jsonValue = JSON.stringify(data);
-      console.log(jsonValue);
-      await AsyncStorage.setItem("@history", jsonValue);
+
+      await AsyncStorage.setItem(name, jsonValue);
     } catch (e) {
       // saving error
       console.log(e);
     }
   });
+}
+
+export async function deleteAll(name) {
+  console.log("Deleting: " + name);
+  AsyncStorage.removeValue = async (name) => {
+    try {
+      await AsyncStorage.removeItem(name);
+    } catch (e) {
+      // remove error
+    }
+
+    console.log("Done.");
+  };
 }

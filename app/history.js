@@ -4,11 +4,19 @@ import {
   Text,
   View,
   ActivityIndicator,
+  Image,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { Link, useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { read } from "./lib/problem";
 import { useState, useEffect } from "react";
+import { Feather } from "@expo/vector-icons";
+
+import { deleteAll } from "./lib/problem";
+
+import * as FileSystem from "expo-file-system";
 
 export default function Modal() {
   const navigation = useNavigation();
@@ -19,17 +27,12 @@ export default function Modal() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 22,
-    },
-    item: {
-      padding: 10,
-      fontSize: 18,
-      height: 44,
-    },
-  });
+  const imgDir = FileSystem.documentDirectory + "images/";
+
+  function deleteHistory() {
+    deleteAll("@history");
+    setLoading(true);
+  }
 
   const fetchData = async () => {
     const data = await read("@history");
@@ -42,18 +45,32 @@ export default function Modal() {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
+    <View>
       {!isPresented && <Link href="../">Dismiss</Link>}
+
+      <TouchableOpacity>
+        <Text>Delete All</Text>
+        <Feather name="trash-2" size={24} color="black" />
+      </TouchableOpacity>
 
       {loading && <ActivityIndicator />}
 
       {data && (
-        <View style={styles.container}>
+        <View className="w-full h-full">
           <FlatList
             data={data}
-            renderItem={({ item }) => (
-              <Text style={styles.item}>{item.time}</Text>
+            renderItem={({ item, index }) => (
+              <View>
+                <Text>{index}</Text>
+                <Feather name="trash-2" size={24} color="black" />
+                <Text>{item.time}</Text>
+                <Image
+                  className="w-1/6 h-1/6"
+                  source={{
+                    uri: imgDir + item.img,
+                  }}
+                />
+              </View>
             )}
           />
         </View>
