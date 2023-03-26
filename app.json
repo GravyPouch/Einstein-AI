@@ -4,6 +4,12 @@
     "web": {
       "bundler": "metro"
     },
+    "ios": {
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.gravypouch.einstein"
+    },
     "name": "einstein",
     "slug": "einstein",
     "plugins": [

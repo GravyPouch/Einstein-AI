@@ -12,6 +12,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -29,10 +30,16 @@ export default function Page() {
 
   const [image, setImage] = useState(null);
 
-  const [cropY, setCropY] = useState(500);
-  const [cropX, setCropX] = useState(700);
-  const [cropOriginX, setCropOriginX] = useState(500);
-  const [cropOriginY, setCropOriginY] = useState(500);
+  const [cropY, setCropY] = useState(0);
+  const [cropX, setCropX] = useState(0);
+  const [cropOriginX, setCropOriginX] = useState(0);
+  const [cropOriginY, setCropOriginY] = useState(0);
+
+  const screenWidth = Dimensions.get("window").width;
+  const screenHeight = Dimensions.get("window").height;
+
+  console.log("screenWidth: " + screenWidth);
+  console.log("screenHeight: " + screenHeight);
 
   const router = useRouter();
 
@@ -89,12 +96,12 @@ export default function Page() {
   async function capture() {
     console.log("capture");
     const picture = await cameraRef.takePictureAsync({
-      allowsEditing: true,
       quality: 0.5,
     });
     const manipResult = await manipulateAsync(
       picture.uri,
       [
+        { resize: { height: screenHeight, width: screenWidth } },
         {
           crop: {
             height: cropY,
@@ -108,15 +115,13 @@ export default function Page() {
     );
     setImage(manipResult);
 
-    cameraRef.pausePreview();
+    //cameraRef.pausePreview();
 
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     const imageURI = await manipResult.uri;
 
     var result = /[^/]*$/.exec(imageURI)[0];
-
-    console.log(imageURI);
 
     router.push({
       pathname: "/answer",
@@ -148,7 +153,20 @@ export default function Page() {
             </Link>
           </View>
 
-          <View className=" ">
+          <View
+            className=" mx-auto"
+            onLayout={(event) => {
+              const layout = event.nativeEvent.layout;
+
+              setCropY(layout.height);
+
+              setCropX(layout.width);
+
+              setCropOriginX(layout.x);
+
+              setCropOriginY(layout.y);
+            }}
+          >
             <SelectorBox />
           </View>
 

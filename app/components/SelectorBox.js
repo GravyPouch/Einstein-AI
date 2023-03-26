@@ -54,8 +54,8 @@ export default SelectorBox = () => {
           setHeight(newHeight);
         },
         onPanResponderRelease: (evt, gestureState) => {
-          console.log(width);
-          console.log(height);
+          console.log("w: " + width);
+          console.log("h: " + height);
         },
       }),
     [width, height] // dependency list
@@ -94,7 +94,7 @@ export default SelectorBox = () => {
   ).current;
 
   return (
-    <View className=" border-red-500 border-2">
+    <View className=" border-red-500 border-2 mx-auto">
       <Text className="text-center text-white pb-2">
         Take a picture of the problem
       </Text>
@@ -103,27 +103,18 @@ export default SelectorBox = () => {
         style={[{ width, height }]}
         className="bg-slate-200/20 p-1 rounded-xl border-white border-2 mx-auto flex flex-wrap flex-row justify-between content-between"
       >
-        {[...Array(2)].map((e, i) => (
-          <>
-            <View className=" w-1/2">
-              <View
-                className="  p-3  self-start border-red-500 border-2"
-                {...panResponder.panHandlers}
-              >
-                <View className="bg-white rounded-full w-1/4 p-2" />
-              </View>
-            </View>
+        <View className=" w-1/2" />
+        <View className=" w-1/2" />
+        <View className=" w-1/2" />
 
-            <View className=" w-1/2">
-              <View
-                className="  p-3  self-end border-red-500 border-2"
-                {...panResponder.panHandlers}
-              >
-                <View className="bg-white rounded-full w-1/4 p-2" />
-              </View>
-            </View>
-          </>
-        ))}
+        <View className=" w-1/2">
+          <View
+            className="  p-3  self-end border-red-500 border-2"
+            {...panResponder.panHandlers}
+          >
+            <View className="bg-white rounded-full w-1/4 p-2" />
+          </View>
+        </View>
       </View>
     </View>
   );
