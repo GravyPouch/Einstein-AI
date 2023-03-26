@@ -13,7 +13,7 @@ export default function Modal() {
   const { image, type } = params;
   console.log(image, type);
 
-  const imgDir = FileSystem.cacheDirectory + "ImageManipulator/" + image;
+  const imgDir = FileSystem.documentDirectory + "images/" + image;
 
   console.log(imgDir);
 

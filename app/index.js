@@ -2,6 +2,7 @@ import { Camera, CameraType, FlashMode, ImageType } from "expo-camera";
 import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import * as Haptics from "expo-haptics";
+import * as FileSystem from "expo-file-system";
 import { Link, useRouter } from "expo-router";
 
 import { useState, useEffect } from "react";
@@ -24,6 +25,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import SelectorBox from "./components/SelectorBox";
 
+import { writeProblem } from "./lib/problem";
+
 export default function Page() {
   const [flash, setFlash] = useState(FlashMode.auto);
   const [flashIcon, setFlashIcon] = useState("ios-flash");
@@ -38,17 +41,14 @@ export default function Page() {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
 
-  console.log("screenWidth: " + screenWidth);
-  console.log("screenHeight: " + screenHeight);
-
   const router = useRouter();
 
   useEffect(() => {
     if (flash === FlashMode.off) {
-      console.log("flash off");
+      //console.log("flash off");
       setFlashIcon("ios-flash-outline");
     } else {
-      console.log("flash on");
+      //console.log("flash on");
       setFlashIcon("ios-flash");
     }
   }, [flash]);
@@ -113,15 +113,21 @@ export default function Page() {
       ],
       { compress: 0.5, format: SaveFormat.JPEG }
     );
-    setImage(manipResult);
 
     //cameraRef.pausePreview();
 
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    //Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
     const imageURI = await manipResult.uri;
 
-    var result = /[^/]*$/.exec(imageURI)[0];
+    let result = /[^/]*$/.exec(imageURI)[0];
+
+    await FileSystem.moveAsync({
+      from: imageURI,
+      to: `${FileSystem.documentDirectory}images/${result}`,
+    });
+
+    await writeProblem("@problems", result);
 
     router.push({
       pathname: "/answer",

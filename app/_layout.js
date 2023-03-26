@@ -1,4 +1,7 @@
 import { Stack } from "expo-router";
+import { appStart } from "./lib/appStart";
+
+appStart();
 
 export default function Layout() {
   return (
