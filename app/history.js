@@ -80,33 +80,46 @@ export default function Modal() {
           className=" mb-10"
           inverted={false}
           data={data}
-          renderItem={({ item, index }) => (
-            <View className=" border-gray-500/30 border-2 p-2 mx-2 rounded-xl my-2">
-              <View className=" flex flex-row justify-between py-2">
-                <Pressable
-                  onPress={() => {
-                    deleteProblem(index);
-                  }}
-                >
-                  <View>
-                    <Feather name="trash-2" size={24} color="red" />
-                  </View>
-                </Pressable>
-                <View>
-                  <Text>No. {index}</Text>
-                  <Text>{item.time}</Text>
-                </View>
-              </View>
+          refreshing={loading}
+          renderItem={({ item, index }) => {
+            const options = {
+              weekday: "short",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              time: "long",
+            };
 
-              <Image
-                style={styles.stretch}
-                className="w-full h-60"
-                source={{
-                  uri: imgDir + item.img,
-                }}
-              />
-            </View>
-          )}
+            var utcSeconds = item.time;
+            var d = new Date(utcSeconds);
+            let timeStamp = d.toLocaleString("en-US", options);
+            return (
+              <View className=" border-gray-500/30 border-2 p-2 mx-2 rounded-xl my-2">
+                <View className=" flex flex-row justify-between py-2">
+                  <Pressable
+                    onPress={() => {
+                      deleteProblem(index);
+                    }}
+                  >
+                    <View>
+                      <Feather name="trash-2" size={24} color="red" />
+                    </View>
+                  </Pressable>
+                  <View>
+                    <Text>{timeStamp}</Text>
+                  </View>
+                </View>
+
+                <Image
+                  style={styles.stretch}
+                  className="w-full h-60"
+                  source={{
+                    uri: imgDir + item.img,
+                  }}
+                />
+              </View>
+            );
+          }}
         />
       )) || <Text className=" text-center text-gray-500 p-10">No History</Text>}
     </View>
