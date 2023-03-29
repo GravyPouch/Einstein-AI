@@ -14,7 +14,7 @@ export default class SelectorBox extends Component {
 
     this.state = {
       width: maxBoxWidth,
-      height: 100,
+      height: 150,
       lastMoveX: null,
       lastMoveY: null,
     };
@@ -40,8 +40,8 @@ export default class SelectorBox extends Component {
     const diffY = dy - lastMoveY;
 
     this.setState({
-      width: Math.max(Math.min(width + diffX * 2, maxBoxWidth), 150),
-      height: Math.max(Math.min(height + diffY * 2, maxBoxHeight), 150),
+      width: Math.max(Math.min(width + diffX * 1.5, maxBoxWidth), 150),
+      height: Math.max(Math.min(height + diffY * 1.5, maxBoxHeight), 150),
       lastMoveX: dx,
       lastMoveY: dy,
     });
