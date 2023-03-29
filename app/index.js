@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import * as Haptics from "expo-haptics";
 import * as FileSystem from "expo-file-system";
 import { Link, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 import { useState, useEffect } from "react";
 import {
@@ -38,6 +39,8 @@ export default function Page() {
   const [cropOriginX, setCropOriginX] = useState(0);
   const [cropOriginY, setCropOriginY] = useState(0);
 
+  const [tokens, setTokens] = useState(10);
+
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
 
@@ -52,6 +55,15 @@ export default function Page() {
       setFlashIcon("ios-flash");
     }
   }, [flash]);
+
+  useEffect(() => {
+    if (image) {
+      console.log(image.uri);
+      //console.log("image uri: " + image.uri);
+      //console.log("image width: " + image.width);
+      //console.log("image height: " + image.height);
+    }
+  }, [image]);
 
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -74,30 +86,13 @@ export default function Page() {
     );
   }
 
-  const pickImageAsync = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      quality: 0.5,
-    });
-
-    if (!result.canceled) {
-      console.log(result);
-    } else {
-      alert("You did not select any image.");
-    }
-  };
-
   function toggleFlash() {
     setFlash((current) =>
       current === FlashMode.off ? FlashMode.on : FlashMode.off
     );
   }
 
-  async function capture() {
-    console.log("capture");
-    const picture = await cameraRef.takePictureAsync({
-      quality: 0.5,
-    });
+  async function cropImage(picture) {
     const manipResult = await manipulateAsync(
       picture.uri,
       [
@@ -113,12 +108,21 @@ export default function Page() {
       ],
       { compress: 0.5, format: SaveFormat.JPEG }
     );
+    return manipResult;
+  }
 
+  async function processImage(picture, crop) {
     //cameraRef.pausePreview();
 
-    //Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    let finalPic = picture;
 
-    const imageURI = await manipResult.uri;
+    if (crop) {
+      finalPic = await cropImage(picture);
+    }
+
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+    const imageURI = await finalPic.uri;
 
     let result = /[^/]*$/.exec(imageURI)[0];
 
@@ -135,8 +139,34 @@ export default function Page() {
     });
   }
 
+  async function capture() {
+    console.log("capture");
+    const picture = await cameraRef.takePictureAsync({
+      quality: 0.5,
+    });
+    setImage(picture);
+    processImage(picture, true);
+  }
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      quality: 0.5,
+    });
+
+    let picture = result.assets[0];
+
+    if (!result.canceled) {
+      setImage(picture);
+      processImage(picture, false);
+    } else {
+      alert("You did not select any image.");
+    }
+  };
+
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       <Camera
         style={styles.camera}
         type={CameraType.back}
@@ -150,7 +180,7 @@ export default function Page() {
           <View className="flex flex-row justify-between items-center p-4">
             <Link href="/purchase">
               <View className=" bg-orange-300 rounded-full p-3">
-                <Text className=" font-bold text-white">1/10</Text>
+                <Text className=" font-bold text-white">{tokens}/10</Text>
               </View>
             </Link>
 
@@ -198,7 +228,7 @@ export default function Page() {
                 <Fontisto name="history" size={32} color="white" />
               </Link>
 
-              <TouchableOpacity onPress={pickImageAsync} className=" px-10">
+              <TouchableOpacity onPress={pickImage} className=" px-10">
                 <MaterialIcons name="photo-library" size={32} color="white" />
               </TouchableOpacity>
             </View>

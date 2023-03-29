@@ -1,5 +1,6 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import { Stack, useSearchParams, useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 export default function Details() {
   const router = useRouter();
@@ -12,13 +13,12 @@ export default function Details() {
           title: "⚙️Settings",
         }}
       />
-      <Text
-        onPress={() => {
-          router.setParams({ name: "Updated" });
-        }}
-      >
-        Update the title
-      </Text>
+      <StatusBar style="dark" />
+      <Button
+        title="Reset All Data"
+        color="#841584"
+        accessibilityLabel="Learn more about this purple button"
+      />
     </View>
   );
 }

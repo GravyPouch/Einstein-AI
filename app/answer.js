@@ -1,6 +1,6 @@
-import { View, Image, Text, StyleSheet } from "react-native";
+import { View, Image, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { Link, useNavigation, useRouter, useSearchParams } from "expo-router";
-import { StatusBar } from "expo-status-bar";
+import { useState, useEffect } from "react";
 import * as FileSystem from "expo-file-system";
 
 export default function Modal() {
@@ -23,22 +23,35 @@ export default function Modal() {
     },
   });
 
+  const [answer, setAnswer] = useState("null");
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = async () => {
+    // setData(data);
+    // setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
-    <View
-      className=" p-4"
-      style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-    >
+    <View className=" p-4 py-10 flex flex-col align-center justify-center gap-y-6">
       {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
       {!isPresented && <Link href="../">Dismiss</Link>}
 
-      <Text>Image:</Text>
       <Image
         style={styles.stretch}
-        className="w-full h-full"
+        className="w-full h-64"
         source={{
           uri: imgDir,
         }}
       />
+
+      <View>
+        <Text>Answer:</Text>
+        {loading && <ActivityIndicator size="large" />}
+      </View>
     </View>
   );
 }

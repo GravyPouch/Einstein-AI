@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { View, PanResponder, Dimensions, Text } from "react-native";
 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import * as Haptics from "expo-haptics";
 
 export default SelectorBox = () => {
@@ -12,8 +14,6 @@ export default SelectorBox = () => {
 
   const [width, setWidth] = useState(300);
   const [height, setHeight] = useState(150);
-  const [gestureDx, setGestureDx] = useState(0);
-  const [gestureDy, setGestureDy] = useState(0);
 
   useEffect(() => {
     //console.log("width: " + width);
@@ -94,9 +94,9 @@ export default SelectorBox = () => {
   ).current;
 
   return (
-    <View className=" border-red-500 border-2 mx-auto">
+    <View className="  mx-auto">
       <Text className="text-center text-white pb-2">
-        Take a picture of the problem
+        Take a picture of a question
       </Text>
 
       <View
@@ -108,11 +108,12 @@ export default SelectorBox = () => {
         <View className=" w-1/2" />
 
         <View className=" w-1/2">
-          <View
-            className="  p-3  self-end border-red-500 border-2"
-            {...panResponder.panHandlers}
-          >
-            <View className="bg-white rounded-full w-1/4 p-2" />
+          <View className=" p-2 self-end " {...panResponder.panHandlers}>
+            <MaterialCommunityIcons
+              name="arrow-top-left-bottom-right"
+              size={24}
+              color="white"
+            />
           </View>
         </View>
       </View>

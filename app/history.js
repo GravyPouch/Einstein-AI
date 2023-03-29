@@ -6,7 +6,9 @@ import {
   ActivityIndicator,
   Image,
   ScrollView,
+  Pressable,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Link, useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -14,7 +16,7 @@ import { read } from "./lib/problem";
 import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 
-import { deleteAll } from "./lib/problem";
+import { deleteAll, deleteItem } from "./lib/problem";
 
 import * as FileSystem from "expo-file-system";
 
@@ -29,11 +31,6 @@ export default function Modal() {
 
   const imgDir = FileSystem.documentDirectory + "images/";
 
-  function deleteHistory() {
-    deleteAll("@history");
-    setLoading(true);
-  }
-
   const fetchData = async () => {
     const data = await read("@history");
     setData(data);
@@ -44,37 +41,74 @@ export default function Modal() {
     fetchData();
   }, []);
 
+  const styles = StyleSheet.create({
+    stretch: {
+      resizeMode: "contain",
+    },
+  });
+
+  async function deleteHistory() {
+    deleteAll("@history");
+    setData(false);
+    alert("History Deleted");
+  }
+
+  async function deleteProblem(index) {
+    if (await deleteItem("@history", index)) {
+      setData(data.splice(index, 1));
+      setLoading(true);
+      fetchData();
+      alert("Item Deleted");
+    }
+  }
+
   return (
     <View>
       {!isPresented && <Link href="../">Dismiss</Link>}
 
-      <TouchableOpacity>
-        <Text>Delete All</Text>
-        <Feather name="trash-2" size={24} color="black" />
-      </TouchableOpacity>
-
-      {loading && <ActivityIndicator />}
-
-      {data && (
-        <View className="w-full h-full">
-          <FlatList
-            data={data}
-            renderItem={({ item, index }) => (
-              <View>
-                <Text>{index}</Text>
-                <Feather name="trash-2" size={24} color="black" />
-                <Text>{item.time}</Text>
-                <Image
-                  className="w-1/6 h-1/6"
-                  source={{
-                    uri: imgDir + item.img,
-                  }}
-                />
-              </View>
-            )}
-          />
+      <Pressable onPress={deleteHistory}>
+        <View className=" flex flex-row justify-between items-center bg-red-500 p-3">
+          <Text>Delete All</Text>
+          <Feather name="trash-2" size={24} color="black" />
         </View>
-      )}
+      </Pressable>
+
+      {loading && <ActivityIndicator size="large" />}
+
+      {(data && (
+        <FlatList
+          className=" mb-10"
+          inverted={false}
+          data={data}
+          renderItem={({ item, index }) => (
+            <View className=" border-gray-500/30 border-2 p-2 mx-2 rounded-xl my-2">
+              <View className=" flex flex-row justify-between py-2">
+                <Pressable
+                  onPress={() => {
+                    deleteProblem(index);
+                  }}
+                >
+                  <View>
+                    <Feather name="trash-2" size={24} color="red" />
+                  </View>
+                </Pressable>
+                <View>
+                  <Text>No. {index}</Text>
+                  <Text>{item.time}</Text>
+                </View>
+              </View>
+
+              <Image
+                style={styles.stretch}
+                className="w-full h-60"
+                source={{
+                  uri: imgDir + item.img,
+                }}
+              />
+            </View>
+          )}
+        />
+      )) || <Text className=" text-center text-gray-500 p-10">No History</Text>}
     </View>
   );
 }

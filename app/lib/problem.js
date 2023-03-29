@@ -16,9 +16,11 @@ export async function writeProblem(name, value) {
   read(name).then(async (data) => {
     if (data == null) {
       data = [];
+    } else if (data.length >= 21) {
+      data.pop();
     }
     try {
-      data.push(value);
+      data.unshift(value);
 
       const jsonValue = JSON.stringify(data);
 
@@ -32,13 +34,33 @@ export async function writeProblem(name, value) {
 
 export async function deleteAll(name) {
   console.log("Deleting: " + name);
-  AsyncStorage.removeValue = async (name) => {
-    try {
-      await AsyncStorage.removeItem(name);
-    } catch (e) {
-      // remove error
-    }
 
-    console.log("Done.");
-  };
+  try {
+    await AsyncStorage.removeItem(name);
+  } catch (e) {
+    // remove error
+    console.log(e);
+  }
+
+  console.log("Done.");
+}
+
+export async function deleteItem(name, index) {
+  console.log("Deleting: " + name + index);
+
+  read(name).then(async (data) => {
+    data.splice(index, 1);
+
+    try {
+      const jsonValue = JSON.stringify(data);
+
+      await AsyncStorage.setItem(name, jsonValue);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  });
+
+  console.log("Done.");
+  return true;
 }

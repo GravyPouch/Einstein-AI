@@ -1,4 +1,5 @@
-import { View } from "react-native";
+import { View, Text, Button, TextInput, SafeAreaView } from "react-native";
+import { useState } from "react";
 import { Link, useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
@@ -8,13 +9,18 @@ export default function Modal() {
   // a full screen page. You may need to change the UI to account for this.
   const isPresented = navigation.canGoBack();
 
+  const [text, onChangeText] = useState("Whats your problem?");
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      {/* Use `../` as a simple way to navigate to the root. This is not analogous to "goBack". */}
+    <SafeAreaView
+      style={{ flex: 1, alignItems: "center", justifyContent: "flex-end" }}
+    >
       {!isPresented && <Link href="../">Dismiss</Link>}
 
-      {/* Native modals have dark backgrounds on iOS, set the status bar to light content. */}
-      <StatusBar style="light" />
-    </View>
+      <View className=" px-3 py-1 bg-slate-400/20 rounded-full border-2 border-black w-11/12 my-2 flex flex-row justify-between items-center">
+        <TextInput value={text} onChangeText={onChangeText} />
+        <Button title="send" />
+      </View>
+    </SafeAreaView>
   );
 }
