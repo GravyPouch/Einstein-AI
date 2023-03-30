@@ -1,5 +1,3 @@
-// In App.js in a new project
-
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,7 +12,10 @@ import Settings from "./screens/Settings.jsx";
 const Stack = createNativeStackNavigator();
 const ModalStack = createNativeStackNavigator();
 
+import { appStart } from "./lib/appStart.js";
+
 export default function App() {
+  appStart();
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -25,7 +26,9 @@ export default function App() {
 
         <Stack.Screen name="Settings" component={Settings} />
 
-        <ModalStack.Group screenOptions={{ presentation: "transparentModal" }}>
+        <ModalStack.Group
+          screenOptions={{ presentation: "modal", headerShown: true }}
+        >
           <Stack.Screen name="Answer" component={Answer} />
           <Stack.Screen name="History" component={History} />
           <Stack.Screen name="Chat" component={Chat} />
@@ -35,55 +38,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-/*
-
-import { Stack } from "expo-router";
-import { appStart } from "./lib/appStart";
-
-appStart();
-
-export default function Layout() {
-  return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          // Hide the header for all other routes.
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="answer"
-        options={{
-          presentation: "modal",
-          title: "📝 Answer",
-        }}
-      />
-      <Stack.Screen
-        name="history"
-        options={{
-          presentation: "modal",
-          title: "🕰️ History",
-        }}
-      />
-      <Stack.Screen
-        name="chat"
-        options={{
-          presentation: "modal",
-          title: "💬 Chat",
-        }}
-      />
-      <Stack.Screen
-        name="purchase"
-        options={{
-          presentation: "modal",
-          title: "🪙 Tokens",
-        }}
-      />
-    </Stack>
-  );
-}
-
-
-*/
