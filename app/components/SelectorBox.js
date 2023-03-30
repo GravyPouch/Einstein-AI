@@ -7,7 +7,7 @@ const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
 
 const maxBoxWidth = screenWidth - screenWidth / 10;
-const maxBoxHeight = screenHeight / 2.5;
+const maxBoxHeight = screenHeight / 2;
 export default class SelectorBox extends Component {
   constructor(props) {
     super(props);
