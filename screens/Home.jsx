@@ -3,7 +3,7 @@ import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import * as ImagePicker from "expo-image-picker";
 import * as Haptics from "expo-haptics";
 import * as FileSystem from "expo-file-system";
-import { Link, useRouter } from "expo-router";
+import { Link, useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 
 import { useState, useEffect } from "react";
@@ -24,11 +24,11 @@ import { Fontisto } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 
-import SelectorBox from "./components/SelectorBox";
+import SelectorBox from "../components/SelectorBox";
 
-import { writeProblem } from "./lib/problem";
+import { writeProblem } from "../lib/problem";
 
-export default function Page() {
+export default function Home() {
   const [flash, setFlash] = useState(FlashMode.auto);
   const [flashIcon, setFlashIcon] = useState("ios-flash");
 
@@ -44,7 +44,7 @@ export default function Page() {
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
 
-  const router = useRouter();
+  const router = useRoute();
 
   useEffect(() => {
     if (flash === FlashMode.off) {
@@ -133,7 +133,7 @@ export default function Page() {
 
     await writeProblem("@history", result);
 
-    router.push({
+    router.navigate({
       pathname: "/answer",
       params: { image: result, type: "history" },
     });
@@ -178,13 +178,13 @@ export default function Page() {
       >
         <SafeAreaView style={styles.buttonContainer}>
           <View className="flex flex-row justify-between items-center p-4">
-            <Link href="/purchase">
+            <Link to={{ screen: "Purchase" }}>
               <View className=" bg-orange-300 rounded-full p-3">
                 <Text className=" font-bold text-white">{tokens}/10</Text>
               </View>
             </Link>
 
-            <Link href="settings">
+            <Link to={{ screen: "Settings" }}>
               <Feather name="settings" size={32} color="white" />
             </Link>
           </View>
@@ -210,7 +210,7 @@ export default function Page() {
 
           <View>
             <View className="flex flex-row justify-around items-center">
-              <Link href="/chat" className=" p-10">
+              <Link to={{ screen: "Chat" }} className=" p-10">
                 <MaterialIcons name="message" size={40} color="white" />
               </Link>
 
@@ -224,7 +224,7 @@ export default function Page() {
             </View>
 
             <View className="flex flex-row justify-center gap-12 py-10">
-              <Link href="/history" className=" px-10">
+              <Link to={{ screen: "History" }} className=" px-10">
                 <Fontisto name="history" size={32} color="white" />
               </Link>
 

@@ -10,22 +10,16 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { Link, useNavigation } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { read } from "./lib/problem";
+
+import { read } from "../lib/problem";
 import { useState, useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 
-import { deleteAll, deleteItem } from "./lib/problem";
+import { deleteAll, deleteItem } from "../lib/problem";
 
 import * as FileSystem from "expo-file-system";
 
-export default function Modal() {
-  const navigation = useNavigation();
-  // If the page was reloaded or navigated to directly, then the modal should be presented as
-  // a full screen page. You may need to change the UI to account for this.
-  const isPresented = navigation.canGoBack();
-
+export default function History() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,8 +58,6 @@ export default function Modal() {
 
   return (
     <View>
-      {!isPresented && <Link href="../">Dismiss</Link>}
-
       <Pressable onPress={deleteHistory}>
         <View className=" flex flex-row justify-between items-center bg-red-500 p-3">
           <Text>Delete All</Text>
