@@ -28,7 +28,7 @@ import SelectorBox from "../components/SelectorBox";
 
 import { writeProblem } from "../lib/problem";
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [flash, setFlash] = useState(FlashMode.auto);
   const [flashIcon, setFlashIcon] = useState("ios-flash");
 
@@ -133,10 +133,7 @@ export default function Home() {
 
     await writeProblem("@history", result);
 
-    router.navigate({
-      pathname: "/answer",
-      params: { image: result, type: "history" },
-    });
+    navigation.navigate("Answer", { image: result, type: "history" });
   }
 
   async function capture() {
