@@ -28,6 +28,8 @@ import SelectorBox from "../components/SelectorBox";
 
 import { writeProblem } from "../lib/problem";
 
+import { useIsFocused } from "@react-navigation/native";
+
 export default function Home({ navigation }) {
   const [flash, setFlash] = useState(FlashMode.auto);
   const [flashIcon, setFlashIcon] = useState("ios-flash");
@@ -43,8 +45,6 @@ export default function Home({ navigation }) {
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
-
-  const router = useRoute();
 
   useEffect(() => {
     if (flash === FlashMode.off) {
@@ -68,6 +68,18 @@ export default function Home({ navigation }) {
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
   const [cameraRef, setCameraRef] = useState(null);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if (cameraRef !== null) {
+      if (isFocused) {
+        cameraRef.resumePreview();
+      } else {
+        cameraRef.pausePreview();
+      }
+    }
+  }, [isFocused, cameraRef]);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -112,8 +124,6 @@ export default function Home({ navigation }) {
   }
 
   async function processImage(picture, crop) {
-    //cameraRef.pausePreview();
-
     let finalPic = picture;
 
     if (crop) {
