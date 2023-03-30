@@ -54,12 +54,12 @@ export default function Modal() {
   }
 
   async function deleteProblem(index) {
-    if (await deleteItem("@history", index)) {
-      setData(data.splice(index, 1));
-      setLoading(true);
-      fetchData();
-      alert("Item Deleted");
-    }
+    setData([]);
+    setLoading(true);
+
+    await deleteItem("@history", index).then(() => fetchData());
+
+    alert("Item Deleted");
   }
 
   return (
