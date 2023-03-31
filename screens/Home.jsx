@@ -15,6 +15,7 @@ import {
   View,
   Image,
   Dimensions,
+  Pressable,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -89,11 +90,20 @@ export default function Home({ navigation }) {
   if (!permission.granted) {
     // Camera permissions are not granted yet
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
+      <View style={styles.container} className=" space-y-4">
+        <Text className=" text-3xl font-bold text-center">
+          Welcome to Einstien
         </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={{ textAlign: "center" }}>
+          All we need is your camera permission to get started
+        </Text>
+        <Pressable onPress={requestPermission}>
+          <View className=" rounded-full bg-black p-4 mx-auto">
+            <Text className=" text-white font-bold text-center">
+              Grant Permission
+            </Text>
+          </View>
+        </Pressable>
       </View>
     );
   }
@@ -213,13 +223,16 @@ export default function Home({ navigation }) {
             <SelectorBox />
           </View>
 
-          <View className=" "></View>
-
           <View>
-            <View className="flex flex-row justify-around items-center">
-              <Link to={{ screen: "Chat" }} className=" p-10">
+            <View className=" flex flex-row items-center justify-center gap-4">
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Chat");
+                }}
+                className=" p-10"
+              >
                 <MaterialIcons name="message" size={40} color="white" />
-              </Link>
+              </TouchableOpacity>
 
               <TouchableOpacity onPress={capture}>
                 <Entypo name="circle" size={85} color="white" />
@@ -230,10 +243,15 @@ export default function Home({ navigation }) {
               </TouchableOpacity>
             </View>
 
-            <View className="flex flex-row justify-center gap-12 py-10">
-              <Link to={{ screen: "History" }} className=" px-10">
+            <View className=" flex flex-row items-center justify-center mx-auto py-4">
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("History");
+                }}
+                className=" px-10"
+              >
                 <Fontisto name="history" size={32} color="white" />
-              </Link>
+              </TouchableOpacity>
 
               <TouchableOpacity onPress={pickImage} className=" px-10">
                 <MaterialIcons name="photo-library" size={32} color="white" />
@@ -261,15 +279,5 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
 
     marginHorizontal: 16,
-  },
-
-  icons: {
-    padding: 10,
-  },
-
-  text: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "white",
   },
 });

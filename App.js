@@ -8,9 +8,11 @@ import History from "./screens/History.jsx";
 import Chat from "./screens/Chat.jsx";
 import Purchase from "./screens/Purchase.jsx";
 import Settings from "./screens/Settings.jsx";
+import Start from "./screens/onboarding/Start.jsx";
 
 const Stack = createNativeStackNavigator();
 const ModalStack = createNativeStackNavigator();
+const OnboardingStack = createNativeStackNavigator();
 
 import { appStart } from "./lib/appStart.js";
 
@@ -34,6 +36,14 @@ export default function App() {
           <Stack.Screen name="Chat" component={Chat} />
           <Stack.Screen name="Purchase" component={Purchase} />
         </ModalStack.Group>
+
+        <OnboardingStack.Group
+          screenOptions={{
+            presentation: "transparentModal",
+          }}
+        >
+          <Stack.Screen name="Start" component={Start} />
+        </OnboardingStack.Group>
       </Stack.Navigator>
     </NavigationContainer>
   );
