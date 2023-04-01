@@ -12,6 +12,7 @@ import Start from "./screens/onboarding/Start.jsx";
 
 const Stack = createNativeStackNavigator();
 const ModalStack = createNativeStackNavigator();
+const PageStack = createNativeStackNavigator();
 const OnboardingStack = createNativeStackNavigator();
 
 import { appStart } from "./lib/appStart.js";
@@ -26,7 +27,11 @@ export default function App() {
       >
         <Stack.Screen name="Home" component={Home} />
 
-        <Stack.Screen name="Settings" component={Settings} />
+        <PageStack.Group
+          screenOptions={{ presentation: "card", headerShown: true }}
+        >
+          <Stack.Screen name="Settings" component={Settings} />
+        </PageStack.Group>
 
         <ModalStack.Group
           screenOptions={{ presentation: "modal", headerShown: true }}
