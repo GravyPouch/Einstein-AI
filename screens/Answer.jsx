@@ -1,6 +1,8 @@
 import { View, Image, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useState, useEffect } from "react";
+import { writeProblem } from "../lib/problem";
 import * as FileSystem from "expo-file-system";
+import { postImageToAPI } from "../lib/api";
 
 export default function Answer({ route }) {
   const { image, type } = route.params;
@@ -21,8 +23,10 @@ export default function Answer({ route }) {
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
-    // setData(data);
-    // setLoading(false);
+    var answer = await postImageToAPI(imgDir);
+    setAnswer(answer);
+    writeProblem("@history", image, answer);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -42,6 +46,7 @@ export default function Answer({ route }) {
       <View>
         <Text>Answer:</Text>
         {loading && <ActivityIndicator size="large" />}
+        {!loading && <Text>{answer}</Text>}
       </View>
     </View>
   );

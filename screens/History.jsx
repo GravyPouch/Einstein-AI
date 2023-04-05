@@ -102,13 +102,17 @@ export default function History() {
                   </View>
                 </View>
 
-                <Image
-                  style={styles.stretch}
-                  className="w-full h-60"
-                  source={{
-                    uri: imgDir + item.img,
-                  }}
-                />
+                <View className=" p-5">
+                  <Image
+                    style={styles.stretch}
+                    className="w-full h-60"
+                    source={{
+                      uri: imgDir + item.img,
+                    }}
+                  />
+                </View>
+
+                <Text>{item.answer}</Text>
               </View>
             );
           }}

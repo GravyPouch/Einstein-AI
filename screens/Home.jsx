@@ -151,8 +151,6 @@ export default function Home({ navigation }) {
       to: `${FileSystem.documentDirectory}images/${result}`,
     });
 
-    await writeProblem("@history", result);
-
     navigation.navigate("Answer", { image: result, type: "history" });
   }
 
