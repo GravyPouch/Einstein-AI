@@ -70,17 +70,23 @@ export default function Home({ navigation }) {
 
   const [cameraRef, setCameraRef] = useState(null);
 
+  const [isCameraReady, setIsCameraReady] = useState(false);
+
   const isFocused = useIsFocused();
 
+  const onCameraReady = () => {
+    setIsCameraReady(true);
+  };
+
   useEffect(() => {
-    if (cameraRef !== null) {
+    if (cameraRef !== null && isCameraReady) {
       if (isFocused) {
         cameraRef.resumePreview();
       } else {
         cameraRef.pausePreview();
       }
     }
-  }, [isFocused, cameraRef]);
+  }, [isFocused, cameraRef, isCameraReady]);
 
   if (!permission) {
     // Camera permissions are still loading
@@ -190,6 +196,7 @@ export default function Home({ navigation }) {
         ref={(ref) => {
           setCameraRef(ref);
         }}
+        onCameraReady={onCameraReady}
       >
         <SafeAreaView style={styles.buttonContainer}>
           <View className="flex flex-row justify-between items-center p-4">
