@@ -43,6 +43,7 @@ export default function Home({ navigation }) {
   const [cropOriginY, setCropOriginY] = useState(0);
 
   const [tokens, setTokens] = useState(10);
+  const [online, setOnline] = useState(true);
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -200,11 +201,17 @@ export default function Home({ navigation }) {
       >
         <SafeAreaView style={styles.buttonContainer}>
           <View className="flex flex-row justify-between items-center p-4">
-            <Link to={{ screen: "Purchase" }}>
-              <View className=" bg-orange-300 rounded-full p-3">
-                <Text className=" font-bold text-white">{tokens}/10</Text>
+            {online ? (
+              <Link to={{ screen: "Offline" }}>
+                <View className=" bg-orange-300 rounded-full p-3">
+                  <Text className=" font-bold text-white">{tokens}/10</Text>
+                </View>
+              </Link>
+            ) : (
+              <View className=" bg-red-500 rounded-full p-3">
+                <Text className=" font-bold text-white">Offline</Text>
               </View>
-            </Link>
+            )}
 
             <Link to={{ screen: "Settings" }}>
               <Feather name="settings" size={32} color="white" />
