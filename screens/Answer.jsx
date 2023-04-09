@@ -84,7 +84,7 @@ export default function Answer({ route, navigation }) {
 
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Purchase");
+                  navigation.navigate("Premium");
                 }}
                 className="w-full bg-black p-5 rounded-full "
               >

@@ -6,7 +6,7 @@ import Home from "./screens/Home.jsx";
 import Answer from "./screens/Answer.jsx";
 import History from "./screens/History.jsx";
 import Chat from "./screens/Chat.jsx";
-import Purchase from "./screens/Purchase.jsx";
+import Premium from "./screens/Premium.jsx";
 import Settings from "./screens/Settings.jsx";
 import Start from "./screens/onboarding/Start.jsx";
 import Offline from "./screens/alerts/Offline.jsx";
@@ -41,7 +41,7 @@ export default function App() {
           <Stack.Screen name="Answer" component={Answer} />
           <Stack.Screen name="History" component={History} />
           <Stack.Screen name="Chat" component={Chat} />
-          <Stack.Screen name="Purchase" component={Purchase} />
+          <Stack.Screen name="Premium" component={Premium} />
         </ModalStack.Group>
 
         <AlertStack.Group

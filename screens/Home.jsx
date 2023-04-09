@@ -27,8 +27,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 
 import SelectorBox from "../components/SelectorBox";
 
-import { writeProblem } from "../lib/problem";
-
 import { useIsFocused } from "@react-navigation/native";
 
 export default function Home({ navigation }) {
@@ -42,8 +40,7 @@ export default function Home({ navigation }) {
   const [cropOriginX, setCropOriginX] = useState(0);
   const [cropOriginY, setCropOriginY] = useState(0);
 
-  const [tokens, setTokens] = useState(10);
-  const [online, setOnline] = useState(true);
+  const [premium, setPremium] = useState(false);
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -201,16 +198,16 @@ export default function Home({ navigation }) {
       >
         <SafeAreaView style={styles.buttonContainer}>
           <View className="flex flex-row justify-between items-center p-4">
-            {online ? (
-              <Link to={{ screen: "Offline" }}>
+            {premium ? (
+              <View className=" bg-green-500 rounded-full p-3">
+                <Text className=" font-bold text-white">Premium</Text>
+              </View>
+            ) : (
+              <Link to={{ screen: "Premium" }}>
                 <View className=" bg-orange-300 rounded-full p-3">
-                  <Text className=" font-bold text-white">{tokens}/10</Text>
+                  <Text className=" font-bold text-white">Try Premium</Text>
                 </View>
               </Link>
-            ) : (
-              <View className=" bg-red-500 rounded-full p-3">
-                <Text className=" font-bold text-white">Offline</Text>
-              </View>
             )}
 
             <Link to={{ screen: "Settings" }}>
