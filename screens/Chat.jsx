@@ -8,6 +8,7 @@ import {
   FlatList,
   ScrollView,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useEffect, useState } from "react";
 
@@ -25,6 +26,12 @@ export default function Chat() {
   }
 
   const sendMessage = async (message) => {
+    if (message == "") {
+      Alert.alert("Text Feild Empty", "You cannot ask the chat nothing", [
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
+      return;
+    }
     await addMessage(message, "user");
     setLoading(true);
     const res = await postChatToAPI(message);

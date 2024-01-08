@@ -23,7 +23,16 @@ export default function Start({ navigation }) {
     setLoading(false);
   };
   return (
-    <View className=" bg-white rounded-xl p-10 px-16 mx-auto my-auto space-y-4">
+    <View
+      className=" bg-white rounded-xl p-10 px-16 mx-auto my-auto space-y-4"
+      style={{
+        backgroundColor: "white",
+        padding: 10,
+        borderRadius: 10,
+        marginHorizontal: "auto",
+        marginVertical: "auto",
+      }}
+    >
       <Text className=" text-3xl text-center font-bold">Uh Oh!</Text>
       <Text className=" text-center">You are Offline.</Text>
       {loading ? (

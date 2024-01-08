@@ -75,8 +75,6 @@ export default function History() {
           refreshing={loading}
           renderItem={({ item, index }) => {
             const options = {
-              weekday: "short",
-              year: "numeric",
               month: "long",
               day: "numeric",
               time: "long",
@@ -84,7 +82,7 @@ export default function History() {
 
             var utcSeconds = item.time;
             var d = new Date(utcSeconds);
-            let timeStamp = d.toLocaleString("en-US", options);
+            let timeStamp = d.toLocaleString(options);
             return (
               <View className=" border-gray-500/30 border-2 p-2 mx-2 rounded-xl my-2">
                 <View className=" flex flex-row justify-between py-2">

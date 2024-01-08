@@ -1,6 +1,7 @@
 import * as React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View } from "react-native";
 
 import Home from "./screens/Home.jsx";
 import Answer from "./screens/Answer.jsx";
@@ -17,12 +18,22 @@ const PageStack = createNativeStackNavigator();
 const OnboardingStack = createNativeStackNavigator();
 const AlertStack = createNativeStackNavigator();
 
+import ModalHeader from "./components/ModalHeader.jsx";
+
 import { appStart } from "./lib/appStart.js";
+
+const Theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "#FFFFFF",
+  },
+};
 
 export default function App() {
   appStart();
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={Theme}>
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{ headerShown: false }}
@@ -30,13 +41,21 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} />
 
         <PageStack.Group
-          screenOptions={{ presentation: "card", headerShown: true }}
+          screenOptions={{
+            presentation: "card",
+            headerShown: true,
+            headerTintColor: "#000000",
+          }}
         >
           <Stack.Screen name="Settings" component={Settings} />
         </PageStack.Group>
 
         <ModalStack.Group
-          screenOptions={{ presentation: "modal", headerShown: true }}
+          screenOptions={{
+            presentation: "modal",
+            headerShown: true,
+            header: (props) => <ModalHeader {...props} />,
+          }}
         >
           <Stack.Screen name="Answer" component={Answer} />
           <Stack.Screen name="History" component={History} />

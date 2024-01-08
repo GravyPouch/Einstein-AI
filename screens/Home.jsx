@@ -5,6 +5,7 @@ import * as Haptics from "expo-haptics";
 import * as FileSystem from "expo-file-system";
 import { Link, useRoute } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
+import { checkOnline } from "../lib/stores/online";
 
 import { useState, useEffect } from "react";
 import {
@@ -16,6 +17,7 @@ import {
   Image,
   Dimensions,
   Pressable,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -40,6 +42,8 @@ export default function Home({ navigation }) {
   const [cropOriginX, setCropOriginX] = useState(0);
   const [cropOriginY, setCropOriginY] = useState(0);
 
+  const [online, setOnline] = useState(true);
+
   const [premium, setPremium] = useState(false);
 
   const screenWidth = Dimensions.get("window").width;
@@ -57,12 +61,23 @@ export default function Home({ navigation }) {
 
   useEffect(() => {
     if (image) {
-      console.log(image.uri);
+      // console.log(image.uri);
       //console.log("image uri: " + image.uri);
       //console.log("image width: " + image.width);
       //console.log("image height: " + image.height);
     }
   }, [image]);
+
+  useEffect(() => {
+    checkOnline().then((online) => {
+      if (online) {
+        console.log("online");
+      } else {
+        console.log("offline");
+        navigation.navigate("Offline");
+      }
+    });
+  }, [online]);
 
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
@@ -179,7 +194,18 @@ export default function Home({ navigation }) {
       setImage(picture);
       processImage(picture, false);
     } else {
-      alert("You did not select any image.");
+      Alert.alert("Alert Title", "My Alert Msg", [
+        {
+          text: "Ask me later",
+          onPress: () => console.log("Ask me later pressed"),
+        },
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+        { text: "OK", onPress: () => console.log("OK Pressed") },
+      ]);
     }
   };
 
